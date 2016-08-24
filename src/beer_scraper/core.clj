@@ -25,10 +25,8 @@
   (let [content
         (enlive/html-resource (java.io.StringReader. html-text))
         ]
-        (zipmap
-          (mapcat :content (enlive/select content [:dt]))
-          (mapcat :content (enlive/select content [:dd]))
-          )
+        (apply hash-map
+          (mapcat :content (enlive/select content [#{:dt :dd}])))
     ))
 
 (defn get-json
