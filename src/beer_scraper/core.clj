@@ -13,21 +13,15 @@
   (defn extract-urls
   "Gets the URLs we're interested in from the page"
   [page]
-  (map #(get-in % [:attrs :href]) (enlive/select page [:.beerstyle_link]))
-)
+  (map #(get-in % [:attrs :href]) (enlive/select page [:.beerstyle_link])))
 
 (defn parse-beer-style
    [beer-style]
-   (slurp (str "http://www.beerforthat.com" beer-style))
-  )
+   (slurp (str "http://www.beerforthat.com" beer-style)))
 
 (defn aside-to-map [html-text]
-  (let [content
-        (enlive/html-resource (java.io.StringReader. html-text))
-        ]
-        (apply hash-map
-          (mapcat :content (enlive/select content [#{:dt :dd}])))
-    ))
+  (let [content (enlive/html-resource (java.io.StringReader. html-text))]
+        (apply hash-map (mapcat :content (enlive/select content [#{:dt :dd}])))))
 
 (defn get-json
   [url]
@@ -41,5 +35,3 @@
       (map #(json/generate-string %))
       (map #(spit "mini_beers_aside.json" % :append true))
     ))
-
-(get-json base-url)
